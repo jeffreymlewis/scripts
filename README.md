@@ -10,9 +10,9 @@ You should **NOT** use the helm cli to deploy or modify helm chart directly! It 
 All helm chart changes should be via terraform.
 
 ### To use this script
-
+```
 aws auth ...
 configure-local-helm-home.sh
 . /Users/$USER/gruntwork-helm-home/env  # source env variables
 helm version  # should see client **and** server version
-
+```
