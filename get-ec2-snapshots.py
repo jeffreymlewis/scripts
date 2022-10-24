@@ -5,7 +5,6 @@ List all AMIs.
 List snapshots in AWS not assoicated with an AMI.
 """
 
-from re import S
 import boto3
 from pprint import pprint
 
