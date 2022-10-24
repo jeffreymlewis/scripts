@@ -24,7 +24,7 @@ def get_ec2_snapshots(region, owner_ids):
 
 if __name__ == '__main__':
   region = 'us-east-1'
-  owners = ['337363176143']
+  owners = ['444444444444']
 
   # Create dict of snapshots with key as SnapshotId for easy lookup
   snapshots = {}
