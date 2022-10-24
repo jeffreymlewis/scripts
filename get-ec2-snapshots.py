@@ -42,11 +42,13 @@ if __name__ == '__main__':
   # Append AMI ImageId to the appropriate snapshot_to_ami mapping
   amis = get_ec2_amis(region)
   for ami in amis:
-    print('{}\t{}'.format(ami['ImageId'], ami['Name']))
+    device_size = 0
     for device in ami['BlockDeviceMappings']:
       if 'Ebs' in device:
         snapshot_id = device['Ebs']['SnapshotId']
         snapshot_to_ami[snapshot_id].append(ami['ImageId'])
+        device_size += device['Ebs']['VolumeSize']
+    print('{}\t{}\t{}'.format(device_size, ami['ImageId'], ami['Name']))
 
   # Print all snapshots which are *not* assoicated with an AMI
   for snapshot_id, amis in snapshot_to_ami.items():
