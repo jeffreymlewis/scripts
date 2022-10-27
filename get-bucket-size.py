@@ -3,6 +3,7 @@
 # Return the size of all S3 buckets in a given AWS account.
 
 import boto3
+import botocore
 import datetime
 
 
@@ -73,7 +74,15 @@ if __name__ == "__main__":
       continue
 
     # get region
-    region = get_bucket_region(s3_client, bucket_name)
+    try:
+      region = get_bucket_region(s3_client, bucket_name)
+    except botocore.exceptions.ClientError as err:
+      # If the bucket doesn't exist, set size to -1 and continue. This way, our output still contains a complete list of buckets.
+      if err.response['Error']['Code'] == 'NoSuchBucket':
+        buckets[bucket_name] = -1
+        continue
+      else:
+        raise err
 
     # get bucket size
     buckets[bucket_name] = get_bucket_size(bucket_name, region)
