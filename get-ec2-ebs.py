@@ -39,10 +39,11 @@ if __name__ == "__main__":
           total_ebs_size += volumes[volume_id]['Size']
 
       # print summery of total EBS size along with instanceId and 'Name'
-      print('{}\t{}\t{}'.format(total_ebs_size, instance['InstanceId'], [tag['Value'] for tag in instance['Tags'] if tag['Key'] == 'Name']))
+      print('{}\t{}\t{}'.format(total_ebs_size, instance['InstanceId'], [
+            tag['Value'] for tag in instance['Tags'] if tag['Key'] == 'Name']))
       # list all EBS volmes for this instance
       for device in instance['BlockDeviceMappings']:
         if 'Ebs' in device:
           volume_id = device['Ebs']['VolumeId']
-          print('\t{}\t{}\t{}'.format(volume_id, volumes[volume_id]['Size'], volumes[volume_id]['VolumeType']))
-      
+          print('\t{}\t{}\t{}'.format(
+              volume_id, volumes[volume_id]['Size'], volumes[volume_id]['VolumeType']))

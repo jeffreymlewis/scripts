@@ -8,17 +8,17 @@ import datetime
 
 
 # An immutable list of S3 storage types, as referenced in CloudWatch Metrics by the `StorageType` dimension.
-CLOUDWATCH_STORAGE_TYPES = (
-  "DeepArchiveObjectOverhead",
-  "DeepArchiveS3ObjectOverhead",
-  "DeepArchiveStorage",
-  "GlacierInstantRetrievalStorage",
-  "GlacierObjectOverhead",
-  "GlacierS3ObjectOverhead",
-  "GlacierStorage",
-  "ReducedRedundancyStorage",
-  "StandardIAStorage",
-  "StandardStorage",
+CLOUDWATCH_STORAGE_TYPESk = (
+    "DeepArchiveObjectOverhead",
+    "DeepArchiveS3ObjectOverhead",
+    "DeepArchiveStorage",
+    "GlacierInstantRetrievalStorage",
+    "GlacierObjectOverhead",
+    "GlacierS3ObjectOverhead",
+    "GlacierStorage",
+    "ReducedRedundancyStorage",
+    "StandardIAStorage",
+    "StandardStorage",
 )
 
 
@@ -30,23 +30,23 @@ def get_bucket_size(bucket_name, region):
   total_size = 0
   for storage_type in CLOUDWATCH_STORAGE_TYPES:
     response = cloudwatch.get_metric_statistics(
-      Namespace = 'AWS/S3',
-      MetricName = 'BucketSizeBytes',
-      Dimensions=[
-        {
-          'Name': 'BucketName',
-          'Value': bucket_name,
-        },
-        {
-          'Name': 'StorageType',
-          'Value': storage_type,
-        }
-      ],
-      # For some reason, CloudWatch metrics are > 24 hours behind.
-      StartTime=datetime.datetime.today() - datetime.timedelta(days=3),
-      EndTime=datetime.datetime.today() - datetime.timedelta(days=2),
-      Period=86400,
-      Statistics=['Average'],
+        Namespace='AWS/S3',
+        MetricName='BucketSizeBytes',
+        Dimensions=[
+            {
+                'Name': 'BucketName',
+                'Value': bucket_name,
+            },
+            {
+                'Name': 'StorageType',
+                'Value': storage_type,
+            }
+        ],
+        # For some reason, CloudWatch metrics are > 24 hours behind.
+        StartTime=datetime.datetime.today() - datetime.timedelta(days=3),
+        EndTime=datetime.datetime.today() - datetime.timedelta(days=2),
+        Period=86400,
+        Statistics=['Average'],
     )
     total_size += response['Datapoints'][0]['Average'] if response['Datapoints'] else 0
   return total_size
@@ -88,7 +88,6 @@ if __name__ == "__main__":
     buckets[bucket_name] = get_bucket_size(bucket_name, region)
 
   # sort buckets by size and print with size in first column
-  sorted_buckets = sorted([(v,k) for k,v in buckets.items()])
+  sorted_buckets = sorted([(v, k) for k, v in buckets.items()])
   for size, bucket in sorted_buckets:
     print('{}\t{}'.format(size, bucket))
-

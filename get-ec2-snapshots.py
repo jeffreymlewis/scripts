@@ -15,6 +15,7 @@ def get_ec2_amis(region):
   response = ec2.describe_images(Owners=['self'])
   return response['Images']
 
+
 def get_ec2_snapshots(region, owner_ids):
   """Return list of snapshots in the given region, owned by the given owner."""
   ec2 = boto3.client('ec2', region_name=region)
@@ -53,5 +54,5 @@ if __name__ == '__main__':
   # Print all snapshots which are *not* assoicated with an AMI
   for snapshot_id, amis in snapshot_to_ami.items():
     if not amis:
-      print('{}\t{}\t{}'.format(snapshots[snapshot_id]['VolumeSize'], snapshots[snapshot_id]['SnapshotId'], snapshots[snapshot_id]['Description']))
-
+      print('{}\t{}\t{}'.format(snapshots[snapshot_id]['VolumeSize'],
+            snapshots[snapshot_id]['SnapshotId'], snapshots[snapshot_id]['Description']))

@@ -43,15 +43,17 @@ if __name__ == '__main__':
   for gateway in get_nat_gateways(region):
     # Lookup vpc id and VPC 'name' if it's set
     vpc_id = gateway['VpcId']
-    vpc_name = [tag['Value'] for tag in vpcs[vpc_id]['Tags'] if tag['Key'] == 'Name']
+    vpc_name = [tag['Value']
+                for tag in vpcs[vpc_id]['Tags'] if tag['Key'] == 'Name']
 
     # Lookup subnet id and VPC 'name' if it's set
     subnet_id = gateway['SubnetId']
-    subnet_name = [tag['Value'] for tag in subnets[subnet_id]['Tags'] if tag['Key'] == 'Name']
-    
+    subnet_name = [tag['Value']
+                   for tag in subnets[subnet_id]['Tags'] if tag['Key'] == 'Name']
+
     # print NAT gateways with any vpc and subnet info we can find
     print('{}\t{} {}\t{} {}'.format(
-      gateway['NatGatewayId'],
-      vpc_id, vpc_name,
-      subnet_id, subnet_name
+        gateway['NatGatewayId'],
+        vpc_id, vpc_name,
+        subnet_id, subnet_name
     ))
